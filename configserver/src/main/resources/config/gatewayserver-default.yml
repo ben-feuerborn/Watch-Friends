@@ -1,0 +1,73 @@
+server:
+  port: 8072
+
+spring:
+  application:
+    name: gatewayserver
+  
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      
+      routes:
+      # === Catalog Service ===
+      - id: catalogservice
+        uri: lb://catalogservice
+        predicates:
+          - Path=/catalog/**
+        filters:
+          - RewritePath=/catalog/(?<path>.*), /${path}
+          - RemoveRequestHeader=Cookie,Set-Cookie
+      # === User Service ===
+      - id: userservice
+        uri: lb://userservice
+        predicates:
+          - Path=/users/**
+        filters:
+          - RewritePath=/users/(?<path>.*), /${path}
+          - RemoveRequestHeader=Cookie,Set-Cookie
+      # === Friend Service ===
+      - id: friendservice
+        uri: lb://friendservice
+        predicates:
+          - Path=/friends/**
+        filters:
+          - RewritePath=/friends/(?<path>.*), /${path}
+          - RemoveRequestHeader=Cookie,Set-Cookie
+
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    endpoint: http://zipkin:9411/api/vs/spans
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://euerkaserver:8070/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG
+    com.watchfriends.gatewayserver: DEBUG
+  config: classpath:logback-spring.xml

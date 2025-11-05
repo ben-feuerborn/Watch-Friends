@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.watchfriends</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>watchfriends-parent-pom</artifactId>
+    <packaging>pom</packaging>
+
+
+    <name>watchfriends-parent-pom</name>
+    <description>Parent Pom for the watchfriends project</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.6</version>
+        <relativePath /> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <docker.image.prefix>watchfriends</docker.image.prefix>
+    </properties>
+
+    <modules>
+        <module>configserver</module>
+        <module>eurekaserver</module>
+        <module>gatewayserver</module>
+        <module>catalogservice</module>
+        <module>friendservice</module>
+        <module>userservice</module>
+    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.13</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

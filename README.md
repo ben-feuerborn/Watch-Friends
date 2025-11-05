@@ -46,20 +46,16 @@ git clone https://github.com/ben-feuerborn/Watch-Friends.git
 cd Watch-Friends
 ```
 
-2. Build all services.
+2. Build and run all services.
 ```
-mvn clean pacakge -DskipTests
-```
-
-3. Run Docker Compose.
-```
-docker compose up --build
+mvn clean package -DskipTests
+docker compose -f docker/docker-compose.yml build --no-cache
+docker compose -f docker/docker-compose.yml up -d
 ```
 
-4. Verify service are runnnig.
-    - Eureka Dashboard: <http://localhost:8761>
-    - Config Server: <http://localhost:8888>
-    - Gateway API: <http://localhost:8080>
+3. Verify service are runnnig.
+    - Eureka Dashboard: <http://localhost:8070>
+    - Keycloak Dashboard: <http://localhost:8080>
 
 ### Profiles
 - **Dev Profile (`dev`):** Lightweight configuration for local development
